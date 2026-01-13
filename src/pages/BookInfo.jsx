@@ -1,14 +1,22 @@
-import React from "react";
-import { useParams } from "react-router";
+import React, { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import Ratings from "../components/ui/Ratings";
 import Price from "../components/ui/Price";
+import Book from "../components/ui/Book";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
 import BestBooks from "../components/ui/BestBooks";
 
-const BookInfo = ({ books, addItemToCart }) => {
+const BookInfo = ({ books, addToCart, cart }) => {
   const { id } = useParams();
   const book = books.find((book) => +book.id === +id);
+  
+  function addBookToCart(book) {
+    addToCart(book);   
+  }
+
+  function bookAddedToCart() {
+    return cart.find(book => book.id === +id);
+  } 
 
   return (
     <div id="books__body">
@@ -53,9 +61,15 @@ const BookInfo = ({ books, addItemToCart }) => {
                     voluptas.
                   </p>
                 </div>
-                <button className="btn" onClick={() => addItemToCart(book)}>
-                  Add to Cart
-                </button>
+                {bookAddedToCart() ? (
+                  <Link to={"/cart"} className="book__link">
+                    <button className="btn">Checkout</button>
+                  </Link>
+                ) : (
+                  <button className="btn" onClick={() => addBookToCart(book)}>
+                    Add to Cart
+                  </button>
+                )}
               </div>
             </div>
           </div>

@@ -18,26 +18,26 @@ const Cart = ({ cart, updateCart, removeItem, totals }) => {
                 <span className="cart__total">Price</span>
               </div>
               <div className="cart__body">
-                {cart.map((item) => {
-                  const itemPrice = item.salePrice || item.originalPrice;
+                {cart.map((book) => {
+                  const itemPrice = book.salePrice || book.originalPrice;
                   return (
-                    <div className="cart__item" key={item.id}>
+                    <div className="cart__item" key={book.id}>
                       <div className="cart__book">
                         <img
                           className="cart__book--img"
-                          src={item.url}
+                          src={book.url}
                           alt=""
                         />
                         <div className="cart__book--info">
                           <span className="cart__book--title">
-                            {item.title}
+                            {book.title}
                           </span>
                           <span className="cart__book--price">
                             ${itemPrice.toFixed(2)}
                           </span>
                           <button
                             className="cart__book--remove"
-                            onClick={() => removeItem(item)}
+                            onClick={() => removeItem(book)}
                           >
                             Remove
                           </button>
@@ -49,14 +49,14 @@ const Cart = ({ cart, updateCart, removeItem, totals }) => {
                           className="cart__input"
                           min={0}
                           max={99}
-                          value={item.quantity}
+                          value={book.quantity}
                           onChange={(event) =>
-                            updateCart(item, event.target.value)
+                            updateCart(book, event.target.value)
                           }
                         />
                       </div>
                       <div className="cart__total">
-                        ${(itemPrice * item.quantity).toFixed(2)}
+                        ${(itemPrice * book.quantity).toFixed(2)}
                       </div>
                     </div>
                   );
