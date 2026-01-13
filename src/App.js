@@ -13,41 +13,39 @@ function App() {
   const [cart, setCart] = useState([]);
 
   function addToCart(book) {
-    setCart((prevCart) => {
-      const isBookInCart = prevCart.find((cartItem) => cartItem.id === book.id);
+    setCart([...cart, {...book, quantity: 1}]);
+  } 
 
-      if (isBookInCart) {
-        return prevCart.map((cartItem) =>
-          cartItem.id === book.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        );
-      }
+  function changeQuantity(book, quantity) {
+    setCart(cart.map((item) => item.id === book.id ? {...item, quantity: +quantity} : item));
+  }
 
-      return [...prevCart, { ...book, quantity: 1 }];
+  function removeItem(item) {
+    setCart(cart.filter((book => book.id !== item.id)));
+  }
+
+  function numberOfItems() {
+    let counter = 0;
+    cart.forEach((item) => {
+      counter += item.quantity;
     });
+    return counter;
   }
 
-  function changeQuantity(bookId, quantity) {
-    setCart((prevCart) =>
-      prevCart
-        .map((cartItem) =>
-          cartItem.id === bookId ? { ...cartItem, quantity } : cartItem
-        )
-        .filter((cartItem) => cartItem.quantity > 0)
-    );
-  }
+  useEffect(() => {
+      }, [cart]);
+
   return (
     <Router>
     <div className="App">
-      <Nav />
+      <Nav numberOfItems={numberOfItems()} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/books" element={<Books books={books} />} />
         <Route path="/books/:id" element={<BookInfo books={books} 
         addToCart={addToCart} cart={cart} />} />
         <Route path="/cart" element={<Cart books={books} cart={cart} 
-        changeQuantity={changeQuantity} />} />
+        changeQuantity={changeQuantity} removeItem={removeItem} />} />
       </Routes>
       <Footer />
     </div>
