@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Books from "./pages/Books";
 import BookInfo from "./pages/BookInfo";
@@ -7,7 +7,6 @@ import { books } from "./data";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import Cart from "./pages/Cart";
-import { counter } from "@fortawesome/fontawesome-svg-core";
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -81,25 +80,25 @@ function App() {
     <Router>
       <div className="App">
         <Nav numberOfItems={numberOfItems()} />
-        <Route path="/" exact render={() => <Home books={books} />} />
-        <Route path="/books" exact render={() => <Books books={books} />} />
-        <Route
-          path="/books/:id"
-          render={() => (
-            <BookInfo books={books} addItemToCart={addItemToCart} />
-          )}
-        />
-        <Route
-          path="/cart"
-          render={() => (
-            <Cart
-              cart={cart}
-              updateCart={updateCart}
-              removeItem={removeItem}
-              totals={calcPrices()}
-            />
-          )}
-        />
+        <Routes>
+          <Route path="/" element={<Home books={books} />} />
+          <Route path="/books" element={<Books books={books} />} />
+          <Route
+            path="/books/:id"
+            element={<BookInfo books={books} addItemToCart={addItemToCart} />}
+          />
+          <Route
+            path="/cart"
+            element={
+              <Cart
+                cart={cart}
+                updateCart={updateCart}
+                removeItem={removeItem}
+                totals={calcPrices()}
+              />
+            }
+          />
+        </Routes>
         <Footer />
       </div>
     </Router>
